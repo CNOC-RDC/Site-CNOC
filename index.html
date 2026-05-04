@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CNOC - Centre National des Opérations Cyber. Structure nationale de cybersécurité en RDC pour protéger l'espace numérique congolais.">
+    <meta name="keywords" content="cybersécurité, RDC, CNOC, cyber défense, sécurité numérique, République Démocratique du Congo">
+    <meta name="author" content="CNOC - Centre National des Opérations Cyber">
+    <title>CNOC - Centre National des Opérations Cyber | RDC</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ===== VARIABLES CSS ===== */
+        :root {
+            --bleu-nuit: #0A1929;
+            --bleu-medium: #1e3a5f;
+            --bleu-clair: #2c5282;
+            --jaune: #FFD700;
+            --orange: #FF8C00;
+            --rouge: #DC143C;
+            --gris-clair: #F5F7FA;
+            --gris-medium: #E2E8F0;
+            --blanc: #FFFFFF;
+            --noir: #000000;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--blanc);
+            background: var(--bleu-nuit);
+            overflow-x: hidden;
+        }
+
+        /* ===== LOADING SCREEN ===== */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bleu-nuit);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--gris-medium);
+            border-top: 3px solid var(--jaune);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== NAVIGATION ===== */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 25, 41, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        header.scrolled {
+            background: rgba(10, 25, 41, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ===== LOGO PROFESSIONNEL ===== */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .logo-container:hover::before {
+            left: 100%;
+        }
+
+        .logo-container:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--jaune);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .logo-wrapper {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px var(--jaune));
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, var(--jaune) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+            animation: pulse-glow 2s infinite;
+            z-index: 1;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.3;
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.5;
+            }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .logo-main {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--blanc);
+            text-shadow: 0 0 20px var(--jaune);
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .logo-subtitle {
+            font-size: 0.7rem;
+            color: var(--jaune);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            line-height: 1.2;
+        }
+
+        .logo-container:hover .logo {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .logo-container:hover .logo-glow {
+            opacity: 0.6;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--blanc);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--jaune);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--jaune);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--blanc);
+            transition: var(--transition);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-medium) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23FFD700" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,133.3C960,128,1056,96,1152,90.7C1248,85,1344,107,1392,117.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--blanc) 0%, var(--jaune) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.5rem;
+            color: var(--gris-clair);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-text .description {
+            font-size: 1.1rem;
+            color: var(--gris-medium);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--jaune) 0%, var(--orange) 100%);
+            color: var(--bleu-nuit);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--blanc);
+            border: 2px solid var(--jaune);
+        }
+
+        .btn-secondary:hover {
+            background: var(--jaune);
+            color: var(--bleu-nuit);
+            transform: translateY(-2px);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, var(--bleu-clair) 0%, var(--bleu-medium) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        
+        /* ===== CYBER SECURITY VISUAL ===== */
+        .cyber-security-visual {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .central-circle {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inner-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--jaune) 0%, var(--orange) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--bleu-nuit);
+            box-shadow: 0 0 30px var(--jaune);
+            animation: pulse 2s infinite;
+        }
+
+        .orbit {
+            position: absolute;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orbit-1 {
+            width: 120px;
+            height: 120px;
+            animation: rotate 10s linear infinite;
+        }
+
+        .orbit-2 {
+            width: 160px;
+            height: 160px;
+            animation: rotate 15s linear infinite reverse;
+        }
+
+        .orbit-3 {
+            width: 200px;
+            height: 200px;
+            animation: rotate 20s linear infinite;
+        }
+
+        .orbit i {
+            position: absolute;
+            color: var(--jaune);
+            font-size: 1.5rem;
+        }
+
+        .orbit-1 i { top: -15px; }
+        .orbit-2 i { right: -15px; }
+        .orbit-3 i { bottom: -15px; }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .code-lines {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--jaune);
+            opacity: 0.9;
+        }
+
+        .code-line {
+            margin-bottom: 5px;
+            animation: typewriter 2s steps(40) infinite;
+        }
+
+        @keyframes typewriter {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .radar-scanner {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 120px;
+            height: 120px;
+        }
+
+        .radar-circle {
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--jaune);
+            border-radius: 50%;
+            position: relative;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+        }
+
+        .radar-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--jaune));
+            transform-origin: left center;
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .radar-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .radar-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--jaune);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--jaune);
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* ===== ORGANIGRAME PROFESSIONNEL ===== */
+        .org-chart {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .org-director {
+            margin-bottom: 3rem;
+        }
+
+        .director-box {
+            background: linear-gradient(135deg, var(--jaune) 0%, var(--orange) 100%);
+            color: var(--bleu-nuit);
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        .director-box i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .director-box h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .org-departments {
+            position: relative;
+        }
+
+        .org-departments::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            width: 2px;
+            height: 30px;
+            background: var(--jaune);
+            transform: translateX(-50%);
+        }
+
+        .department-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .department-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .department-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--jaune) 0%, var(--orange) 100%);
+        }
+
+        .department-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--jaune);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .department-box i {
+            font-size: 2.5rem;
+            color: var(--jaune);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .department-box h4 {
+            color: var(--blanc);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .department-box p {
+            color: var(--gris-clair);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .department-box small {
+            color: var(--gris-medium);
+            font-size: 0.8rem;
+            line-height: 1.4;
+            display: block;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== ANCRE HERO AJUSTEMENT ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-medium) 100%);
+            overflow: hidden;
+            padding-top: 120px;
+            scroll-margin-top: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 0;
+        }
+
+        /* ===== SECTIONS GÉNÉRIQUES ===== */
+        section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--blanc);
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: var(--gris-medium);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== VALEURS SECTION ===== */
+        .valeurs {
+            background: linear-gradient(135deg, var(--bleu-medium) 0%, var(--bleu-nuit) 100%);
+        }
+
+        .valeurs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .valeur-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .valeur-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--jaune);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.1);
+        }
+
+        .valeur-icon {
+            font-size: 3rem;
+            color: var(--jaune);
+            margin-bottom: 1rem;
+        }
+
+        .valeur-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--blanc);
+        }
+
+        .valeur-card p {
+            color: var(--gris-medium);
+            line-height: 1.6;
+        }
+
+        /* ===== MISSIONS SECTION ===== */
+        .missions {
+            background: var(--bleu-nuit);
+        }
+
+        .missions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .mission-card {
+            background: linear-gradient(135deg, var(--bleu-medium) 0%, var(--bleu-clair) 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--jaune) 0%, var(--orange) 100%);
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .mission-icon {
+            font-size: 2.5rem;
+            color: var(--jaune);
+            margin-bottom: 1rem;
+        }
+
+        .mission-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--blanc);
+        }
+
+        .mission-card p {
+            color: var(--gris-clair);
+            line-height: 1.6;
+        }
+
+        /* ===== CAS D'USAGE SECTION ===== */
+        .cas-usage {
+            background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-medium) 100%);
+        }
+
+        .usage-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .usage-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--jaune);
+            transform: translateX(-50%);
+        }
+
+        .usage-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .usage-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .usage-content {
+            flex: 1;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin: 0 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .usage-dot {
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            width: 20px;
+            height: 20px;
+            background: var(--jaune);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--jaune);
+        }
+
+        .usage-content h3 {
+            color: var(--jaune);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .usage-content p {
+            color: var(--gris-medium);
+            line-height: 1.6;
+        }
+
+        /* ===== PARTENAIRES SECTION ===== */
+        .partenaires {
+            background: var(--bleu-nuit);
+        }
+
+        .partenaires-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .partenaire-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .partenaire-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            border-color: var(--jaune);
+        }
+
+        .partenaire-card h3 {
+            color: var(--blanc);
+            font-size: 1.2rem;
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact {
+            background: linear-gradient(135deg, var(--bleu-medium) 0%, var(--bleu-nuit) 100%);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-info h3 {
+            color: var(--jaune);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--gris-medium);
+        }
+
+        .contact-item i {
+            color: var(--jaune);
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gris-clair);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            color: var(--blanc);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--jaune);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--bleu-nuit);
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--jaune);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--gris-medium);
+            text-decoration: none;
+            line-height: 1.8;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--jaune);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--jaune);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--jaune);
+            color: var(--bleu-nuit);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
+            color: var(--gris-medium);
+        }
+
+        /* ===== WHATSAPP BUTTON ===== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 320px;
+                height: calc(100vh - 70px);
+                background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-medium) 100%);
+                flex-direction: column;
+                justify-content: start;
+                padding: 2rem;
+                transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+                border-left: 2px solid var(--jaune);
+                backdrop-filter: blur(10px);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin-bottom: 1rem;
+                transform: translateX(20px);
+                opacity: 0;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active li {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            .nav-links.active li:nth-child(1) { transition-delay: 0.1s; }
+            .nav-links.active li:nth-child(2) { transition-delay: 0.2s; }
+            .nav-links.active li:nth-child(3) { transition-delay: 0.3s; }
+            .nav-links.active li:nth-child(4) { transition-delay: 0.4s; }
+            .nav-links.active li:nth-child(5) { transition-delay: 0.5s; }
+            .nav-links.active li:nth-child(6) { transition-delay: 0.6s; }
+
+            .menu-toggle {
+                display: flex;
+                z-index: 1001;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+
+            /* Logo mobile */
+            .logo-container {
+                padding: 0.3rem 0.8rem;
+                gap: 0.8rem;
+            }
+
+            .logo-wrapper {
+                width: 50px;
+                height: 50px;
+            }
+
+            .logo-glow {
+                width: 60px;
+                height: 60px;
+            }
+
+            .logo-main {
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+            }
+
+            .logo-subtitle {
+                font-size: 0.6rem;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+                padding: 1rem 0;
+            }
+
+            .hero-visual {
+                margin-top: 2rem;
+                min-height: 300px;
+            }
+
+            .cyber-security-visual {
+                transform: scale(0.8);
+            }
+
+            .code-lines {
+                font-size: 0.7rem;
+                padding: 10px;
+            }
+
+            .radar-scanner {
+                width: 80px;
+                height: 80px;
+            }
+
+            .central-circle {
+                width: 150px;
+                height: 150px;
+            }
+
+            .inner-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .usage-timeline::before {
+                left: 20px;
+            }
+
+            .usage-item {
+                flex-direction: column !important;
+                padding-left: 50px;
+            }
+
+            .usage-dot {
+                left: 20px;
+            }
+
+            .usage-content {
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            section {
+                padding: 3rem 0;
+            }
+
+            .hero-text h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero {
+                min-height: 90vh;
+                padding: 1rem 0;
+            }
+
+            .hero-content {
+                gap: 1.5rem;
+                padding: 0.5rem 0;
+            }
+
+            .hero-visual {
+                min-height: 250px;
+                margin-top: 1.5rem;
+            }
+
+            .cyber-security-visual {
+                transform: scale(0.6);
+            }
+
+            .code-lines {
+                font-size: 0.6rem;
+                padding: 8px;
+                top: 10px;
+                left: 10px;
+            }
+
+            .radar-scanner {
+                width: 60px;
+                height: 60px;
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .central-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .inner-circle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .orbit-1 { width: 80px; height: 80px; }
+            .orbit-2 { width: 100px; height: 100px; }
+            .orbit-3 { width: 120px; height: 120px; }
+
+            .orbit i {
+                font-size: 1rem;
+            }
+
+            .hero-text .subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-text .description {
+                font-size: 0.9rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <header id="header">
+        <nav>
+            <a href="#accueil" class="nav-link logo-container">
+                <div class="logo-wrapper">
+                    <img src="images/logo.png" alt="CNOC Logo" class="logo">
+                    <div class="logo-glow"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-main">CNOC</span>
+                    <span class="logo-subtitle">Centre National des Opérations Cyber</span>
+                </div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#accueil" class="nav-link active">Accueil</a></li>
+                <li><a href="#a-propos" class="nav-link">À propos</a></li>
+                <li><a href="#missions" class="nav-link">Missions</a></li>
+                <li><a href="#partenaires" class="nav-link">Partenaires</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="accueil">
+        <div class="hero-content">
+            <div class="hero-text fade-in">
+                <h1>CNOC – Centre National des Opérations Cyber</h1>
+                <p class="subtitle">Pour une souveraineté numérique de la République Démocratique du Congo</p>
+                <p class="description">
+                    Nous sommes un groupe de jeunes Congolais formés en cybersécurité et réseaux, engagés dans la protection de l'espace numérique national et la formation de la prochaine génération d'experts cyber.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#missions" class="btn btn-primary">
+                        <i class="fas fa-shield-alt"></i>
+                        Découvrir nos missions
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">
+                        <i class="fas fa-envelope"></i>
+                        Nous contacter
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual fade-in">
+                <div class="hero-image">
+                    <div class="cyber-security-visual">
+                        <!-- Cercle central avec animation -->
+                        <div class="central-circle">
+                            <div class="inner-circle">
+                                <i class="fas fa-shield-virus"></i>
+                            </div>
+                            <div class="orbit orbit-1">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="orbit orbit-2">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <div class="orbit orbit-3">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                        </div>
+                        <!-- Lignes de code animées -->
+                        <div class="code-lines">
+                            <div class="code-line">01: <span style="color: #00ff00;">SECURITY_PROTOCOL</span> = <span style="color: #ff9500;">ACTIVE</span></div>
+                            <div class="code-line">02: <span style="color: #00ff00;">FIREWALL_STATUS</span> = <span style="color: #00ff00;">ENABLED</span></div>
+                            <div class="code-line">03: <span style="color: #00ff00;">THREAT_LEVEL</span> = <span style="color: #ff9500;">MONITORING</span></div>
+                            <div class="code-line">04: <span style="color: #00ff00;">SOVEREIGNTY</span> = <span style="color: #ffd700;">PROTECTED</span></div>
+                        </div>
+                        <!-- Radar de surveillance -->
+                        <div class="radar-scanner">
+                            <div class="radar-circle"></div>
+                            <div class="radar-line"></div>
+                            <div class="radar-dots">
+                                <div class="radar-dot" style="top: 20%; left: 30%;"></div>
+                                <div class="radar-dot" style="top: 60%; left: 70%;"></div>
+                                <div class="radar-dot" style="top: 40%; left: 80%;"></div>
+                                <div class="radar-dot" style="top: 70%; left: 25%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Valeurs Section -->
+    <section class="valeurs" id="a-propos">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Nos Valeurs</h2>
+                <p>Les principes qui guident notre action et notre engagement pour la RDC</p>
+            </div>
+            <div class="valeurs-grid">
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-flag"></i>
+                    </div>
+                    <h3>Patriotisme</h3>
+                    <p>Nous agissons d'abord pour notre pays, sans intérêt personnel, avec la conviction que la souveraineté numérique est un enjeu national.</p>
+                </div>
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Excellence</h3>
+                    <p>Nous visons le plus haut niveau de compétence technique et organisationnelle pour être crédibles devant les institutions et partenaires.</p>
+                </div>
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Discipline</h3>
+                    <p>Nous nous organisons avec rigueur et respect des engagements. La discipline est le fondement de toute structure opérationnelle durable.</p>
+                </div>
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Collaboration</h3>
+                    <p>Nous travaillons avec toutes les bonnes volontés et institutions. La cybersécurité nationale se construit ensemble.</p>
+                </div>
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3>Intégrité</h3>
+                    <p>Nous respectons l'éthique, la confidentialité et la légalité dans toutes nos actions et interventions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chiffres Clés Section -->
+    <section class="chiffres-cles" style="background: var(--bleu-nuit); padding: 4rem 0;">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Chiffres Clés</h2>
+                <p>Pour crédibiliser notre action</p>
+            </div>
+            <div class="valeurs-grid">
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>+50</h3>
+                    <p>Jeunes formateurs certifiés</p>
+                </div>
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>4</h3>
+                    <p>Axes de travail opérationnels</p>
+                </div>
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>+10</h3>
+                    <p>Infrastructures critiques identifiées</p>
+                </div>
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>0</h3>
+                    <p>Tolérance envers les cybermenaces</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- À Propos Section -->
+    <section class="a-propos" id="a-propos" style="background: linear-gradient(135deg, var(--bleu-medium) 0%, var(--bleu-nuit) 100%); padding: 5rem 0;">
+        <div class="container">
+            <!-- Qui sommes-nous -->
+            <div class="section-title fade-in">
+                <h2>Qui Sommes-Nous ?</h2>
+                <p>Notre histoire et notre engagement</p>
+            </div>
+            <div class="mission-card fade-in" style="max-width: 900px; margin: 0 auto 3rem; text-align: center;">
+                <p style="color: var(--gris-clair); line-height: 1.8; font-size: 1.1rem;">
+                    Nous sommes un groupe de jeunes Congolais, formateurs certifiés dans le cadre d'un programme national de formation numérique. Issus de la filière cybersécurité et des réseaux, nous avons suivi un parcours exigeant qui nous a permis d'acquérir des compétences techniques et pédagogiques solides.
+                </p>
+                <p style="color: var(--gris-clair); line-height: 1.8; font-size: 1.1rem; margin-top: 1.5rem;">
+                    Aujourd'hui, nous mettons ces compétences en commun avec une ambition claire : <strong style="color: var(--jaune);">servir notre pays</strong>. Nous ne voulons pas rester spectateurs face aux cybermenaces qui grandissent chaque jour. Nous voulons être acteurs de la souveraineté numérique de la RDC.
+                </p>
+            </div>
+
+            <!-- Notre histoire -->
+            <div class="section-title fade-in">
+                <h2>Notre Histoire</h2>
+                <p>Le parcours qui nous a menés ici</p>
+            </div>
+            <div class="mission-card fade-in" style="max-width: 900px; margin: 0 auto 3rem; text-align: center;">
+                <p style="color: var(--gris-clair); line-height: 1.8; font-size: 1.1rem;">
+                    Tout a commencé avec un constat : la RDC dispose d'une jeunesse talentueuse formée aux métiers du numérique, mais cette force reste dispersée et inexploitée sur le plan stratégique.
+                </p>
+                <p style="color: var(--gris-clair); line-height: 1.8; font-size: 1.1rem; margin-top: 1.5rem;">
+                    Réunis par une même passion pour la cybersécurité et un même amour pour notre pays, nous avons décidé de transformer cette énergie en une organisation structurée. Après plusieurs réunions, ateliers et échanges, le <strong style="color: var(--jaune);">CNOC – Centre National des Opérations Cyber</strong> est né.
+                </p>
+                <p style="color: var(--gris-clair); line-height: 1.8; font-size: 1.1rem; margin-top: 1.5rem;">
+                    Aujourd'hui, nous sommes une équipe soudée, répartie en quatre axes de travail complémentaires, prête à présenter notre projet aux plus hautes autorités du pays.
+                </p>
+            </div>
+
+            <!-- Notre vision -->
+            <div class="section-title fade-in">
+                <h2>Notre Vision</h2>
+                <p>Ce que nous aspirons à construire</p>
+            </div>
+            <div class="mission-card fade-in" style="max-width: 900px; margin: 0 auto 3rem; text-align: center;">
+                <p style="color: var(--gris-clair); line-height: 1.8; font-size: 1.1rem;">
+                    Notre vision est de bâtir une <strong style="color: var(--jaune);">structure nationale de cybersécurité crédible, opérationnelle et reconnue par l'État congolais</strong>. Une structure capable de collaborer avec les institutions, de protéger les infrastructures critiques et de former la prochaine génération d'experts numériques.
+                </p>
+                <p style="color: var(--gris-clair); line-height: 1.8; font-size: 1.1rem; margin-top: 1.5rem;">
+                    Nous aspirons à faire de la RDC un pays souverain sur son espace numérique, où la jeunesse qualifiée joue un rôle central dans la sécurité et le développement.
+                </p>
+            </div>
+
+            <!-- Notre mission -->
+            <div class="section-title fade-in">
+                <h2>Notre Mission</h2>
+                <p>Notre triple engagement</p>
+            </div>
+            <div class="missions-grid" style="margin-bottom: 3rem;">
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h3>1. Structurer les Talents</h3>
+                    <p>Organiser les compétences issues des programmes de formation numérique pour en faire une force organisée et disciplinée.</p>
+                </div>
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>2. Concevoir et Porter un Projet Solide</h3>
+                    <p>Élaborer un dossier institutionnel de qualité et le présenter aux autorités en vue d'une reconnaissance officielle.</p>
+                </div>
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>3. Opérationnaliser une Capacité Nationale</h3>
+                    <p>Mettre en place des moyens humains et techniques de surveillance, d'intervention et de formation en cybersécurité.</p>
+                </div>
+            </div>
+
+            <!-- Nos objectifs stratégiques -->
+            <div class="section-title fade-in">
+                <h2>Nos Objectifs Stratégiques</h2>
+                <p>Notre feuille de route</p>
+            </div>
+            <div class="valeurs-grid">
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Court Terme (3 mois)</h3>
+                    <p>Finaliser le projet, obtenir la reconnaissance officielle, structurer l'équipe</p>
+                </div>
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Moyen Terme (6-12 mois)</h3>
+                    <p>Mettre en place les premières capacités opérationnelles, former les premières cohortes, établir des partenariats institutionnels</p>
+                </div>
+                <div class="valeur-card fade-in">
+                    <div class="valeur-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Long Terme (2-5 ans)</h3>
+                    <p>Devenir un acteur national incontournable de la cybersécurité, contribuer à la souveraineté numérique de la RDC, essaimer dans toutes les provinces</p>
+                </div>
+            </div>
+
+            <!-- Notre Organisation Structurelle -->
+            <div class="section-title fade-in">
+                <h2>Structure Organisationnelle</h2>
+                <p>Départements spécialisés pour une cybersécurité complète</p>
+            </div>
+            
+            <!-- Organigramme visuel -->
+            <div class="org-chart fade-in" style="max-width: 1000px; margin: 0 auto 3rem; text-align: center;">
+                <div class="org-director">
+                    <div class="director-box">
+                        <i class="fas fa-crown"></i>
+                        <h4>Direction Générale</h4>
+                        <p>Coordination Stratégique</p>
+                    </div>
+                </div>
+                <div class="org-departments">
+                    <div class="department-row">
+                        <div class="department-box">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>SOC</h4>
+                            <p>Security Operations Center</p>
+                            <small>Surveillance 24/7, détection des menaces, monitoring des infrastructures critiques</small>
+                        </div>
+                        <div class="department-box">
+                            <i class="fas fa-bug"></i>
+                            <h4>CERT</h4>
+                            <p>Computer Emergency Response Team</p>
+                            <small>Réponse aux incidents, analyse forensique, gestion de crises cyber</small>
+                        </div>
+                    </div>
+                    <div class="department-row">
+                        <div class="department-box">
+                            <i class="fas fa-user-ninja"></i>
+                            <h4>Red Team</h4>
+                            <p>Tests d'Intrusion</p>
+                            <small>Pentesting, simulations d'attaques, évaluation des vulnérabilités</small>
+                        </div>
+                        <div class="department-box">
+                            <i class="fas fa-shield-virus"></i>
+                            <h4>Blue Team</h4>
+                            <p>Défense Active</p>
+                            <small>Détection, containment, éradication, recovery des menaces</small>
+                        </div>
+                    </div>
+                    <div class="department-row">
+                        <div class="department-box">
+                            <i class="fas fa-search"></i>
+                            <h4>Forensics</h4>
+                            <p>Analyse Numérique</p>
+                            <small>Collecte de preuves, investigation, reconstruction d'incidents</small>
+                        </div>
+                        <div class="department-box">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h4>Formation</h4>
+                            <p>Académie CNOC</p>
+                            <p>Certifications, labs pratiques, CTF nationaux, montée en compétences</p>
+                        </div>
+                    </div>
+                    <div class="department-row">
+                        <div class="department-box">
+                            <i class="fas fa-chess"></i>
+                            <h4>Stratégie</h4>
+                            <p>Relations Institutionnelles</p>
+                            <small>Plaidoyer, partenariats, représentation internationale, politique de sécurité</small>
+                        </div>
+                        <div class="department-box">
+                            <i class="fas fa-microscope"></i>
+                            <h4>R&D</h4>
+                            <p>Recherche & Développement</p>
+                            <small>Innovation, veille technologique, développement d'outils spécifiques</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description détaillée -->
+            <div class="departments-detail fade-in" style="max-width: 1200px; margin: 0 auto;">
+                <div class="mission-card" style="background: linear-gradient(135deg, var(--bleu-medium) 0%, var(--bleu-clair) 100%); margin-bottom: 2rem;">
+                    <h3 style="color: var(--jaune); margin-bottom: 1.5rem; text-align: center;">
+                        <i class="fas fa-sitemap"></i> Architecture de Sécurité Intégrée
+                    </h3>
+                    <p style="color: var(--gris-clair); line-height: 1.8; text-align: center;">
+                        Notre structure organisationnelle repose sur une approche <strong style="color: var(--jaune);">holistique de la cybersécurité</strong>. 
+                        Chaque département travaille en synergie pour assurer une protection complète de l'espace numérique congolais, 
+                        de la prévention des menaces à la réponse aux incidents, en passant par la formation des talents locaux.
+                    </p>
+                </div>
+                
+                <div class="missions-grid">
+                    <div class="mission-card fade-in">
+                        <div class="mission-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h4>Veille & Détection</h4>
+                        <p>Le SOC et nos équipes de veille assurent une surveillance permanente des menaces émergentes et des activités suspectes sur les infrastructures critiques nationales.</p>
+                    </div>
+                    <div class="mission-card fade-in">
+                        <div class="mission-icon">
+                            <i class="fas fa-hammer"></i>
+                        </div>
+                        <h4>Réponse & Remédiation</h4>
+                        <p>Le CERT et la Blue Team interviennent rapidement pour contenir les incidents, analyser les attaques et restaurer les services affectés.</p>
+                    </div>
+                    <div class="mission-card fade-in">
+                        <div class="mission-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h4>Tests & Validation</h4>
+                        <p>La Red Team réalise des tests d'intrusion contrôlés pour identifier et corriger les vulnérabilités avant qu'elles ne soient exploitées.</p>
+                    </div>
+                    <div class="mission-card fade-in">
+                        <div class="mission-icon">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <h4>Investigation & Preuves</h4>
+                        <p>Le département Forensics analyse les incidents pour comprendre les vecteurs d'attaque et collecter les preuves numériques nécessaires aux enquêtes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Missions Section -->
+    <section class="missions" id="missions">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Nos Missions Nationales</h2>
+                <p>Défendre l'intégrité numérique de la République Démocratique du Congo et protéger notre souveraineté dans l'espace cyber</p>
+            </div>
+            
+            <!-- Message d'introduction motivant -->
+            <div class="mission-card fade-in" style="max-width: 900px; margin: 0 auto 3rem; text-align: center; background: linear-gradient(135deg, var(--jaune) 0%, var(--orange) 100%); color: var(--bleu-nuit);">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-flag"></i> Au Service de la Nation
+                </h3>
+                <p style="font-weight: 500; line-height: 1.8;">
+                    Dans un monde où les cybermenaces deviennent une arme de déstabilisation, le CNOC se positionne comme le <strong>bouclier numérique de la RDC</strong>. 
+                    Nos missions ne sont pas de simples opérations techniques, mais des actes de défense nationale pour protéger 
+                    notre indépendance, nos institutions et notre avenir numérique.
+                </p>
+            </div>
+
+            <div class="missions-grid">
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-satellite-dish"></i>
+                    </div>
+                    <h3>Vigilance Numérique Souveraine</h3>
+                    <p>Nous assurons une surveillance stratégique 24/7 de l'espace numérique congolais, protégeant les infrastructures vitales de notre nation : systèmes bancaires, réseaux de télécommunications, production d'énergie, et plateformes gouvernementales.</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 8px; border-left: 3px solid var(--jaune);">
+                        <p style="color: var(--jaune); font-weight: bold; margin-bottom: 0.5rem;">Notre Engagement</p>
+                        <p style="color: var(--gris-clair); font-size: 0.9rem;">Aucune menace ne traverse notre radar sans être analysée, qualifiée et neutralisée avant de nuire à la sécurité nationale.</p>
+                    </div>
+                </div>
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Réponse Rapide et Décisive</h3>
+                    <p>Face aux attaques cybernétiques contre notre pays, nos équipes d'intervention spécialisées déploient une réponse immédiate et coordonnée. Chaque minute compte pour protéger nos intérêts nationaux et maintenir la continuité des services essentiels.</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 8px; border-left: 3px solid var(--jaune);">
+                        <p style="color: var(--jaune); font-weight: bold; margin-bottom: 0.5rem;">Capacité d'Intervention</p>
+                        <p style="color: var(--gris-clair); font-size: 0.9rem;">Équipes d'astreinte nationales, protocoles d'urgence, coordination inter-institutions, remédiation complète.</p>
+                    </div>
+                </div>
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-eye-slash"></i>
+                    </div>
+                    <h3>Protection de la Vérité et de la Démocratie</h3>
+                    <p>Nous combattons les campagnes de désinformation étrangères et les manipulations numériques qui menacent notre cohésion sociale et nos processus démocratiques. La vérité est notre première ligne de défense.</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 8px; border-left: 3px solid var(--jaune);">
+                        <p style="color: var(--jaune); font-weight: bold; margin-bottom: 0.5rem;">Défense Informationnelle</p>
+                        <p style="color: var(--gris-clair); font-size: 0.9rem;">Détection des fake news, traçabilité des sources, contre-narratifs, protection des élections numériques.</p>
+                    </div>
+                </div>
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Forge de l'Excellence Cyber Congolaise</h3>
+                    <p>Nous bâtissons la prochaine génération de défenseurs numériques de notre nation. À travers des formations de pointe et des certifications internationales, nous créons une réserve de talents congolais prêts à défendre notre souveraineté numérique.</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 8px; border-left: 3px solid var(--jaune);">
+                        <p style="color: var(--jaune); font-weight: bold; margin-bottom: 0.5rem;">Vision à Long Terme</p>
+                        <p style="color: var(--gris-clair); font-size: 0.9rem;">Académie CNOC, laboratoires de pointe, partenariats internationaux, excellence made in RDC.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message de clôture motivant -->
+            <div class="mission-card fade-in" style="max-width: 900px; margin: 3rem auto 0; text-align: center; border: 2px solid var(--jaune); background: rgba(255, 215, 0, 0.05);">
+                <h3 style="color: var(--jaune); margin-bottom: 1rem;">
+                    <i class="fas fa-trophy"></i> Notre Promesse à la Nation
+                </h3>
+                <p style="color: var(--gris-clair); line-height: 1.8;">
+                    Le CNOC est plus qu'une organisation technique : c'est <strong>l'engagement d'une génération</strong> 
+                    à protéger la dignité numérique de la République Démocratique du Congo. 
+                    Chaque ligne de code que nous écrivons, chaque menace que nous neutralisons, 
+                    chaque talent que nous formons est un acte de patriotisme et un investissement 
+                    dans l'avenir souverain de notre pays.
+                </p>
+                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255, 215, 0, 0.2);">
+                    <p style="color: var(--jaune); font-weight: bold; font-size: 1.1rem;">
+                        "La souveraineté numérique n'est pas une option, c'est notre droit et notre devoir."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Partenaires Section -->
+    <section class="partenaires" id="partenaires">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Devenir Partenaire</h2>
+                <p>Rejoignez-nous dans la construction de la souveraineté numérique de la RDC</p>
+            </div>
+            
+            <div class="mission-card fade-in" style="max-width: 900px; margin: 0 auto 3rem; text-align: center;">
+                <div class="mission-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Opportunités de Partenariat</h3>
+                <p style="line-height: 1.8;">
+                    Le CNOC recherche des partenaires stratégiques pour lancer cette initiative nationale. 
+                    Votre expertise, vos ressources ou votre soutien financier peuvent faire la différence 
+                    dans la protection de l'espace numérique congolais.
+                </p>
+            </div>
+
+            <div class="missions-grid">
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3>Partenaires Institutionnels</h3>
+                    <p>Ministères, agences gouvernementales, et institutions publiques souhaitant sécuriser leurs infrastructures numériques.</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                        <p style="color: var(--jaune); font-weight: bold;">Bénéfices</p>
+                        <p style="color: var(--gris-clair); font-size: 0.9rem;">Sécurité renforcée, conformité réglementaire, expertise locale</p>
+                    </div>
+                </div>
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3>Investisseurs et Financiers</h3>
+                    <p>Banques, fonds d'investissement, et partenaires financiers intéressés par un projet à fort impact social et économique.</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                        <p style="color: var(--jaune); font-weight: bold;">Retour sur investissement</p>
+                        <p style="color: var(--gris-clair); font-size: 0.9rem;">Modèle économique viable, marché en croissance, impact mesurable</p>
+                    </div>
+                </div>
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Partenaires Académiques</h3>
+                    <p>Universités, écoles d'ingénieurs, et centres de formation souhaitant développer des programmes en cybersécurité.</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                        <p style="color: var(--jaune); font-weight: bold;">Collaboration</p>
+                        <p style="color: var(--gris-clair); font-size: 0.9rem;">Programmes conjoints, stages, recherche appliquée</p>
+                    </div>
+                </div>
+                <div class="mission-card fade-in">
+                    <div class="mission-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Partenaires Internationaux</h3>
+                    <p>Organisations internationales, agences de coopération, et entreprises étrangères expertes en cybersécurité.</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                        <p style="color: var(--jaune); font-weight: bold;">Expertise mondiale</p>
+                        <p style="color: var(--gris-clair); font-size: 0.9rem;">Transfert de savoir-faire, certification internationale, ouverture des marchés</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appel à l'action -->
+            <div class="mission-card fade-in" style="max-width: 800px; margin: 3rem auto 0; text-align: center; border: 2px solid var(--jaune); background: rgba(255, 215, 0, 0.05);">
+                <h3 style="color: var(--jaune); margin-bottom: 1rem;">
+                    <i class="fas fa-rocket"></i> Propulsons Ensemble la Cybersécurité Congolaise
+                </h3>
+                <p style="color: var(--gris-clair); line-height: 1.8;">
+                    Ensemble, nous pouvons bâtir une structure nationale de cybersécurité qui protège 
+                    nos infrastructures, forme nos talents et renforce notre souveraineté numérique.
+                </p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="#contact" class="btn btn-primary" style="background: linear-gradient(135deg, var(--jaune) 0%, var(--orange) 100%); color: var(--bleu-nuit);">
+                        <i class="fas fa-envelope"></i>
+                        Discutons d'un partenariat
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Contactez-nous</h2>
+                <p>Rejoignez-nous dans notre mission pour la souveraineté numérique de la RDC</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info fade-in">
+                    <h3>Informations de Contact</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>contact@cnoc.cd</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+243 [votre numéro]</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>+243 [votre numéro]</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Kinshasa, République Démocratique du Congo</span>
+                    </div>
+                    
+                    <!-- Demande d'audience -->
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255, 215, 0, 0.1); border-radius: 10px; border: 1px solid rgba(255, 215, 0, 0.2);">
+                        <h4 style="color: var(--jaune); margin-bottom: 1rem;">
+                            <i class="fas fa-calendar-alt"></i> Demande d'Audience
+                        </h4>
+                        <p style="color: var(--gris-clair); margin-bottom: 1rem;">
+                            Si vous êtes une institution ou un organisme officiel souhaitant nous recevoir pour une présentation de notre projet, veuillez nous contacter à l'adresse suivante :
+                        </p>
+                        <p style="color: var(--jaune); font-weight: bold;">
+                            <i class="fas fa-envelope"></i> audiences@cnoc.cd
+                        </p>
+                        <p style="color: var(--gris-medium); font-size: 0.9rem;">
+                            Nous vous répondrons dans les plus brefs délais.
+                        </p>
+                    </div>
+                </div>
+                <div class="contact-form fade-in">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Nom et prénom *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="institution">Institution / Organisation</label>
+                            <input type="text" id="institution" name="institution">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Adresse email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Téléphone</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Objet *</label>
+                            <select id="subject" name="subject" required style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 215, 0, 0.2); border-radius: 10px; color: var(--blanc); font-family: inherit;">
+                                <option value="">Sélectionnez un objet</option>
+                                <option value="partenariat">Partenariat</option>
+                                <option value="information">Information</option>
+                                <option value="audience">Demande d'audience</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" required placeholder="Décrivez votre demande en détail..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Envoyer le message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CNOC</h3>
+                    <p>Centre National des Opérations Cyber</p>
+                    <p style="font-style: italic; color: var(--jaune);">"Pour une souveraineté numérique de la RDC"</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <p><a href="#accueil">Accueil</a></p>
+                    <p><a href="#a-propos">À propos</a></p>
+                    <p><a href="#missions">Missions</a></p>
+                    <p><a href="#partenaires">Partenaires</a></p>
+                    <p><a href="#contact">Contact</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Nos services</h3>
+                    <p>Protection des infrastructures</p>
+                    <p>Formation en cybersécurité</p>
+                    <p>Conseil stratégique</p>
+                    <p>Réponse aux incidents</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope" style="color: var(--jaune); margin-right: 0.5rem;"></i>contact@cnoc.cd</p>
+                    <p><i class="fas fa-envelope" style="color: var(--jaune); margin-right: 0.5rem;"></i>audiences@cnoc.cd</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CNOC – Centre National des Opérations Cyber – République Démocratique du Congo</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">"Pour une souveraineté numérique de la RDC"</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/243826806151" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Active navigation link
+        const sections = document.querySelectorAll('section[id]');
+        const navItems = document.querySelectorAll('.nav-link');
+
+        function updateActiveNav() {
+            let current = '';
+            const scrollPosition = window.scrollY + 150; // Offset for better detection
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                const targetId = item.getAttribute('href').slice(1);
+                if (targetId === current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        
+        // Update active nav on page load
+        updateActiveNav();
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Contact form handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Here you would normally send the data to a server
+            // For now, we'll show a success message
+            alert('Merci pour votre message! Nous vous contacterons dans les plus brefs délais.');
+            this.reset();
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').slice(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    const headerHeight = document.getElementById('header').offsetHeight;
+                    let targetPosition = target.offsetTop - headerHeight;
+                    
+                    // Special handling for hero section
+                    if (targetId === 'accueil') {
+                        targetPosition = 0; // Go to very top for hero
+                    }
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update active nav immediately
+                    setTimeout(() => {
+                        updateActiveNav();
+                    }, 100);
+                }
+            });
+        });
+
+        // Add parallax effect to hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
